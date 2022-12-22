@@ -12,8 +12,8 @@ namespace EmailSender.Api.Controllers
         {
             _mailService = mailService;
         }
-        [HttpPost("send-welcome-link")]
-        public Task SendWelcomeLink([FromBody] MailModel model)
+        [HttpPost("send-link")]
+        public Task SendLink([FromBody] MailModel model)
         {
             return _mailService.SendEmail(model);
         }
