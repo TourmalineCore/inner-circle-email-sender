@@ -21,5 +21,5 @@ spec:
             name: {{ template "chart.fullname" . }}-service
             port:
               number: 80
-        path: /api/salary(/|$)(.*)
+        path: /api/email(/|$)(.*)
         pathType: Prefix

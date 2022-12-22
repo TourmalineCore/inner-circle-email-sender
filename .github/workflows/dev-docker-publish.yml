@@ -34,7 +34,6 @@
             exec: helm upgrade --namespace dev-inner-circle --create-namespace --install dev-emailsender-service-api 
                     --set "aspnetcoreEnvironment=Development"
                     --set "ingress.host"=${{ secrets.DEV_HOST }}
-                    --set "deployment.appsettings.ConnectionStrings.DefaultConnection=${{ secrets.DEV_POSTGRESQLCONNECTIONSTRING }}"
                     --set "deployment.appsettings.MailOptions.SenderMailAddress=${{ secrets.DEV_SENDERMAILADDRESS }}"
                     --set "deployment.appsettings.MailOptions.SenderMailPassword=${{ secrets.DEV_SENDERMAILPASSWORD }}"
                     --set "imageCredentials.username=${{ github.actor }}" 
