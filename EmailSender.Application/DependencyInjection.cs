@@ -9,8 +9,8 @@ namespace EmailSender.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
-            var mailServiceOptions = configuration.GetSection("MailOptions");
-            services.Configure<MailOptions>(c => mailServiceOptions.Bind(c));
+            var mailServiceOptions = configuration.GetSection("SendGridOptions");
+            services.Configure<SendGridOptions>(c => mailServiceOptions.Bind(c));
             services.AddTransient<MailService>();
             return services;
         }

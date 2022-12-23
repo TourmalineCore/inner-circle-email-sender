@@ -1,29 +1,31 @@
 ﻿using EmailSender.Application.Services.Options;
 using Microsoft.Extensions.Options;
-using System.Net.Mail;
-using System.Net;
 using EmailSender.Application.Models;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace EmailSender.Application.Services
 {
     public class MailService
     {
-        private readonly MailOptions _mailOptions;
-        private readonly SmtpClient _client;
+        private readonly SendGridOptions _mailOptions;
+        private readonly SendGridClient _client;
 
-        public MailService(IOptions<MailOptions> mailOptions)
+        public MailService(IOptions<SendGridOptions> mailOptions)
         {
             _mailOptions = mailOptions.Value;
-            _client = new SmtpClient();
-            _client.Host = "smtp.mail.ru";
-            _client.Port = 587;
-            _client.EnableSsl = true;
-            _client.Credentials = new NetworkCredential(_mailOptions.SenderMailAddress, _mailOptions.SenderMailPassword);
+            _client = new SendGridClient(_mailOptions.SendGridAPIKey);
         }
 
         public async Task SendEmail(MailModel model)
-        { 
-            await _client.SendMailAsync(new MailMessage(_mailOptions.SenderMailAddress, model.To, null, model.Body));
+        {
+            var mail = new SendGridMessage
+            {
+                From = new EmailAddress(_mailOptions.SenderEmail),
+                PlainTextContent = model.Body
+            };
+            mail.AddTo(new EmailAddress(model.To));
+            await _client.SendEmailAsync(mail);
         }
     }
 }
