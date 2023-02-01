@@ -11,7 +11,7 @@ namespace EmailSender.Application
         {
             var mailServiceOptions = configuration.GetSection("SendGridOptions");
             services.Configure<SendGridOptions>(c => mailServiceOptions.Bind(c));
-            services.AddTransient<MailService>();
+            services.AddTransient<IEmailSender, MailService>();
             return services;
         }
 

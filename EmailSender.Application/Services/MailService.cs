@@ -6,26 +6,40 @@ using SendGrid.Helpers.Mail;
 
 namespace EmailSender.Application.Services
 {
-    public class MailService
+    public class MailService : IEmailSender
     {
         private readonly SendGridOptions _mailOptions;
-        private readonly SendGridClient _client;
 
         public MailService(IOptions<SendGridOptions> mailOptions)
         {
             _mailOptions = mailOptions.Value;
-            _client = new SendGridClient(_mailOptions.SendGridAPIKey);
         }
 
-        public async Task SendEmail(MailModel model)
+        public async Task SendEmailAsync(MailModel mailModel)
         {
-            var mail = new SendGridMessage
+            if (string.IsNullOrEmpty(_mailOptions.SendGridAPIKey))
             {
-                From = new EmailAddress(_mailOptions.SenderEmail),
-                PlainTextContent = model.Body
+                throw new Exception("Null SendGridKey");
+            }
+
+            await Execute(_mailOptions.SendGridAPIKey, mailModel.Body, mailModel.To);
+        }
+
+        public async Task<Response> Execute(string apiKey, string message, string email)
+        {
+            var client = new SendGridClient(apiKey);
+
+            var msg = new SendGridMessage()
+            {
+                From = new EmailAddress(_mailOptions.SenderEmail, _mailOptions.SenderName),
+                Subject = "Данные для входа",
+                PlainTextContent = message,
+                HtmlContent = $"<div>{message}</div>",
             };
-            mail.AddTo(new EmailAddress(model.To));
-            await _client.SendEmailAsync(mail);
+
+            msg.AddTo(email);
+
+            return await client.SendEmailAsync(msg);
         }
     }
 }
