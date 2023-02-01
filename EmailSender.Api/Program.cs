@@ -1,9 +1,12 @@
 using EmailSender.Application;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddCors();
+builder.Services.AddSwaggerGen();
 
 var configuration = builder.Configuration;
 
@@ -36,7 +39,22 @@ builder.Services.AddApplication(configuration);
 
 var app = builder.Build();
 
+app.UseSwagger();
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+    options.RoutePrefix = string.Empty;
+});
+
 app.UseRouting();
+
+app.UseCors(
+    corsPolicyBuilder => corsPolicyBuilder
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(host => true)
+    .AllowAnyMethod()
+    .AllowAnyOrigin()
+);
 
 app.UseEndpoints(endpoints => { endpoints.MapControllers();});
 
