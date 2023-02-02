@@ -7,15 +7,16 @@ namespace EmailSender.Api.Controllers
     [Route("api/mail")]
     public class MailController : Controller
     {
-        private readonly MailService _mailService;
-        public MailController(MailService mailService)
+        private readonly IEmailSender _mailService;
+        public MailController(IEmailSender mailService)
         {
             _mailService = mailService;
         }
+
         [HttpPost("send-link")]
-        public Task SendLink([FromBody] MailModel model)
+        public async Task SendLink([FromBody] MailModel model)
         {
-            return _mailService.SendEmail(model);
+            await _mailService.SendEmailAsync(model);
         }
     }
 }
