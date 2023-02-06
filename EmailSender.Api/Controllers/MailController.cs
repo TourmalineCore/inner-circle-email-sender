@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EmailSender.Api.Controllers
 {
-    [Route("api/mail")]
+    [Route("mail")]
     public class MailController : Controller
     {
         private readonly IEmailSender _mailService;
@@ -13,8 +13,13 @@ namespace EmailSender.Api.Controllers
             _mailService = mailService;
         }
 
-        [HttpPost("send-link")]
-        public async Task SendLink([FromBody] MailModel model)
+        [HttpPost("send-welcome-link")]
+        public async Task SendWelcomeLink([FromBody] MailModel model)
+        {
+            await _mailService.SendEmailAsync(model);
+        }
+        [HttpPost("send-reset-link")]
+        public async Task SendResetLink([FromBody] MailModel model)
         {
             await _mailService.SendEmailAsync(model);
         }
