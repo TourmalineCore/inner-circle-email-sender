@@ -7,7 +7,6 @@ obj/
 .vs
 *.sln.DotSettings.user
 *.csproj.user
-*.yml
 
 # storage for pgadmin
 */pgadmin/sessions/
