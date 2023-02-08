@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EmailSender.Api.Controllers
 {
-    [Route("mail")]
+    [Route("api/mail")]
     public class MailController : Controller
     {
         private readonly IEmailSender _mailService;
