@@ -13,8 +13,13 @@ namespace EmailSender.Api.Controllers
             _mailService = mailService;
         }
 
-        [HttpPost("send-link")]
-        public async Task SendLink([FromBody] MailModel model)
+        [HttpPost("send-welcome-link")]
+        public async Task SendWelcomeLink([FromBody] MailModel model)
+        {
+            await _mailService.SendEmailAsync(model);
+        }
+        [HttpPost("send-reset-link")]
+        public async Task SendResetLink([FromBody] MailModel model)
         {
             await _mailService.SendEmailAsync(model);
         }

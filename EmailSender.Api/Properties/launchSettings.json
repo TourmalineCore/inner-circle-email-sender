@@ -8,7 +8,7 @@
         "ASPNETCORE_ENVIRONMENT": "Debug"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:5002"
+      "applicationUrl": "http://localhost:5015"
     }
   },
   "iisSettings": {
