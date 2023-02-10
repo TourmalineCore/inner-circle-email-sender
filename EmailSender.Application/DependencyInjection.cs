@@ -9,9 +9,21 @@ namespace EmailSender.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
-            var mailServiceOptions = configuration.GetSection("GmailOptions");
-            services.Configure<GmailOptions>(c => mailServiceOptions.Bind(c));
-            services.AddTransient<IEmailSender, SendEmailService>();
+            var switchOptions = configuration.GetSection("SwitchOptions");
+            var mailServiceOptions = configuration.GetSection(switchOptions.Value);
+
+            if (switchOptions.Value.Equals("GmailOptions"))
+            {
+                
+                services.Configure<GmailOptions>(c => mailServiceOptions.Bind(c));
+                services.AddTransient<IEmailSender, SendEmailService>();
+            }
+            else
+            {
+                services.Configure<SendGridOptions>(c => mailServiceOptions.Bind(c));
+                services.AddTransient<IEmailSender, SendGridEmailService>();
+            }
+            
             return services;
         }
 
