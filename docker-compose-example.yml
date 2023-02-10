@@ -15,6 +15,9 @@ services:
       - GmailOptions__Port=***secret***
       - GmailOptions__FromEmail=***secret***
       - GmailOptions__FromPassword=***secret***
+      - SendGridOptions__SendGridAPIKey=***secret***
+      - SendGridOptions__SenderEmail=***secret***
+      - SendGridOptions__SenderName=***secret***
     networks:
       - ic-backend-deb
 
