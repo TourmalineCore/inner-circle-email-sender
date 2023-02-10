@@ -12,16 +12,20 @@ namespace EmailSender.Application
             var switchOptions = configuration.GetSection("SwitchOptions");
             var mailServiceOptions = configuration.GetSection(switchOptions.Value);
 
-            if (switchOptions.Value.Equals("GmailOptions"))
+            switch (configuration.GetSection("SwitchOptions").Value)
             {
-                
-                services.Configure<GmailOptions>(c => mailServiceOptions.Bind(c));
-                services.AddTransient<IEmailSender, SendEmailService>();
-            }
-            else
-            {
-                services.Configure<SendGridOptions>(c => mailServiceOptions.Bind(c));
-                services.AddTransient<IEmailSender, SendGridEmailService>();
+                case "GmailOptions":
+                    services.Configure<GmailOptions>(c => mailServiceOptions.Bind(c));
+                    services.AddTransient<IEmailSender, SendEmailService>();
+                    break;
+
+                case "SendGridOptions":
+                    services.Configure<SendGridOptions>(c => mailServiceOptions.Bind(c));
+                    services.AddTransient<IEmailSender, SendGridEmailService>();
+                    break;
+
+                default:
+                    throw new Exception("The SwitchOptions parameter is specified incorrectly");
             }
             
             return services;
