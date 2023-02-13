@@ -13,12 +13,12 @@ namespace EmailSender.Application
             {
                 case "Debug":
                     services.Configure<GoogleSmtpOptions>(c => configuration.GetSection("GmailOptions").Bind(c));
-                    services.AddTransient<IEmailSender, SendEmailService>();
+                    services.AddTransient<IEmailSender, GmailSender>();
                     break;
 
                 case "Development":
                     services.Configure<GoogleSmtpOptions>(c => configuration.GetSection("GmailOptions").Bind(c));
-                    services.AddTransient<IEmailSender, SendEmailService>();
+                    services.AddTransient<IEmailSender, GmailSender>();
                     break;
             }
             
