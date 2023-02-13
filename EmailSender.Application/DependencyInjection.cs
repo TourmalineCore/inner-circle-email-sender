@@ -9,17 +9,15 @@ namespace EmailSender.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
-            switch (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"))
-            {
-                case "Debug":
-                    services.Configure<GoogleSmtpOptions>(c => configuration.GetSection("GmailOptions").Bind(c));
-                    services.AddTransient<IEmailSender, GmailSender>();
-                    break;
+            const string appEnvironmentVariableName = "ASPNETCORE_ENVIRONMENT";
+            const string debugEnvironmentName = "Debug";
+            const string developmentEnvironmentName = "Development";
 
-                case "Development":
-                    services.Configure<GoogleSmtpOptions>(c => configuration.GetSection("GmailOptions").Bind(c));
-                    services.AddTransient<IEmailSender, GmailSender>();
-                    break;
+            if (Environment.GetEnvironmentVariable(appEnvironmentVariableName) == debugEnvironmentName 
+            || Environment.GetEnvironmentVariable(appEnvironmentVariableName) == developmentEnvironmentName) 
+            {
+                services.Configure<GoogleSmtpOptions>(opt => configuration.GetSection(nameof(GoogleSmtpOptions)));
+                services.AddTransient<IEmailSender, GmailSender>();
             }
             
             return services;
