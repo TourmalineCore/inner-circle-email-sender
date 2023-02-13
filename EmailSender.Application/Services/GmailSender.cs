@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace EmailSender.Application.Services
 {
-    public class SendEmailService : IEmailSender
+    public class GmailSender : IEmailSender
     {
         private readonly GoogleSmtpOptions _mailOptions;
         private readonly SmtpClient _client;
-        public SendEmailService(IOptions<GoogleSmtpOptions> mailOptions)
+        public GmailSender(IOptions<GoogleSmtpOptions> mailOptions)
         {
             _mailOptions = mailOptions.Value;
             _client = new SmtpClient(_mailOptions.Host, int.Parse(_mailOptions.Port));
