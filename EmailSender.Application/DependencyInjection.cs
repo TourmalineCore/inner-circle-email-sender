@@ -9,23 +9,17 @@ namespace EmailSender.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
-            var switchOptions = configuration.GetSection("SwitchOptions");
-            var mailServiceOptions = configuration.GetSection(switchOptions.Value);
-
-            switch (configuration.GetSection("SwitchOptions").Value)
+            switch (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"))
             {
-                case "GmailOptions":
-                    services.Configure<GmailOptions>(c => mailServiceOptions.Bind(c));
+                case "Debug":
+                    services.Configure<GmailOptions>(c => configuration.GetSection("GmailOptions").Bind(c));
                     services.AddTransient<IEmailSender, SendEmailService>();
                     break;
 
-                case "SendGridOptions":
-                    services.Configure<SendGridOptions>(c => mailServiceOptions.Bind(c));
-                    services.AddTransient<IEmailSender, SendGridEmailService>();
+                case "Dev":
+                    services.Configure<GmailOptions>(c => configuration.GetSection("GmailOptions").Bind(c));
+                    services.AddTransient<IEmailSender, SendEmailService>();
                     break;
-
-                default:
-                    throw new Exception("The SwitchOptions parameter is specified incorrectly");
             }
             
             return services;
