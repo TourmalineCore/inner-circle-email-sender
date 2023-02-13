@@ -12,12 +12,12 @@ namespace EmailSender.Application
             switch (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"))
             {
                 case "Debug":
-                    services.Configure<GmailOptions>(c => configuration.GetSection("GmailOptions").Bind(c));
+                    services.Configure<GoogleSmtpOptions>(c => configuration.GetSection("GmailOptions").Bind(c));
                     services.AddTransient<IEmailSender, SendEmailService>();
                     break;
 
                 case "Development":
-                    services.Configure<GmailOptions>(c => configuration.GetSection("GmailOptions").Bind(c));
+                    services.Configure<GoogleSmtpOptions>(c => configuration.GetSection("GmailOptions").Bind(c));
                     services.AddTransient<IEmailSender, SendEmailService>();
                     break;
             }

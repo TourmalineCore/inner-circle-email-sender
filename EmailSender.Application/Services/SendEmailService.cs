@@ -12,9 +12,9 @@ namespace EmailSender.Application.Services
 {
     public class SendEmailService : IEmailSender
     {
-        private readonly GmailOptions _mailOptions;
+        private readonly GoogleSmtpOptions _mailOptions;
         private readonly SmtpClient _client;
-        public SendEmailService(IOptions<GmailOptions> mailOptions)
+        public SendEmailService(IOptions<GoogleSmtpOptions> mailOptions)
         {
             _mailOptions = mailOptions.Value;
             _client = new SmtpClient(_mailOptions.Host, int.Parse(_mailOptions.Port));

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EmailSender.Application.Services.Options
 {
-    public class GmailOptions
+    public class GoogleSmtpOptions
     {
         public string Host { get; set; }
         public string Port { get; set; }
