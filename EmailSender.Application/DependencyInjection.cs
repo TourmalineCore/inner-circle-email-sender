@@ -16,7 +16,7 @@ namespace EmailSender.Application
                     services.AddTransient<IEmailSender, SendEmailService>();
                     break;
 
-                case "Dev":
+                case "Development":
                     services.Configure<GmailOptions>(c => configuration.GetSection("GmailOptions").Bind(c));
                     services.AddTransient<IEmailSender, SendEmailService>();
                     break;
