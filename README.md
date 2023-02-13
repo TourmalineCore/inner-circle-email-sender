@@ -26,15 +26,15 @@ https://support.google.com/mail/answer/7126229?hl=en.
 2. Enter credentials of your SendGrid account in docker-compose.yml:
 
 If you use the Google SMTP, fill out the following variables:
-    - GoogleSmtpOptions__Host
-    - GoogleSmtpOptions__Port
-    - GoogleSmtpOptions__FromEmail
-    - GoogleSmtpOptions__FromPassword
+- GoogleSmtpOptions__Host
+- GoogleSmtpOptions__Port
+- GoogleSmtpOptions__FromEmail
+- GoogleSmtpOptions__FromPassword
 
 If you use Send Grid, fill out:  
-    - SendGridOptions__SendGridAPIKey
-    - SendGridOptions__SenderEmail
-    - SendGridOptions__SenderName
+- SendGridOptions__SendGridAPIKey
+- SendGridOptions__SenderEmail
+- SendGridOptions__SenderName
 
 
 3. You need to create an internal network for configuring interaction between different back-end services.  
