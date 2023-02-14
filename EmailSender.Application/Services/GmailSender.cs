@@ -20,7 +20,6 @@ namespace EmailSender.Application.Services
             _client.Credentials = new System.Net.NetworkCredential(_mailOptions.FromEmail, _mailOptions.FromPassword);
             _client.DeliveryMethod = SmtpDeliveryMethod.Network;
             _client.UseDefaultCredentials = false;
-
         }
         public async Task SendEmailAsync(MailModel mailModel)
         {
