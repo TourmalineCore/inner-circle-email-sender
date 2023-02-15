@@ -1,11 +1,9 @@
 using EmailSender.Application.Services.Options;
 using EmailSender.Application.Services;
 using System.Reflection;
+using EmailSender.Api;
 
 const string appEnvironmentVariableName = "ASPNETCORE_ENVIRONMENT";
-const string debugEnvironmentName = "Debug";
-const string developmentEnvironmentName = "Development";
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -39,17 +37,17 @@ builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
     }
 });
 
-if (Environment.GetEnvironmentVariable(appEnvironmentVariableName) == debugEnvironmentName
-|| Environment.GetEnvironmentVariable(appEnvironmentVariableName) == developmentEnvironmentName)
+var environmentName = Environment.GetEnvironmentVariable(appEnvironmentVariableName);
+
+if (environmentName == EnvironmentVariable.Debug || environmentName == EnvironmentVariable.Development)
 {
-    builder.Services.Configure<GoogleSmtpOptions>(opt => configuration.GetSection(nameof(GoogleSmtpOptions)));
+    builder.Services.Configure<GoogleSmtpOptions>(configuration.GetSection(nameof(GoogleSmtpOptions)));
     builder.Services.AddTransient<IEmailSender, GmailSender>();
 }
 
-
 var app = builder.Build();
 
-if (app.Environment.IsEnvironment("Debug"))
+if (app.Environment.IsEnvironment(EnvironmentVariable.Debug))
 {
     app.UseSwagger();
     app.UseSwaggerUI();
