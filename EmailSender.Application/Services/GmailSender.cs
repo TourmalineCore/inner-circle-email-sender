@@ -1,9 +1,6 @@
 ﻿using EmailSender.Application.Models;
 using EmailSender.Application.Services.Options;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Mail;
 
 namespace EmailSender.Application.Services
@@ -12,6 +9,7 @@ namespace EmailSender.Application.Services
     {
         private readonly GoogleSmtpOptions _mailOptions;
         private readonly SmtpClient _client;
+
         public GmailSender(IOptions<GoogleSmtpOptions> mailOptions)
         {
             _mailOptions = mailOptions.Value;
@@ -21,6 +19,7 @@ namespace EmailSender.Application.Services
             _client.DeliveryMethod = SmtpDeliveryMethod.Network;
             _client.UseDefaultCredentials = false;
         }
+
         public async Task SendEmailAsync(MailModel mailModel)
         {
             var email = new MailMessage();
