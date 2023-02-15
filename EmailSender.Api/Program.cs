@@ -1,7 +1,9 @@
-using EmailSender.Application;
-using Microsoft.AspNetCore.Cors.Infrastructure;
+using EmailSender.Application.Services.Options;
+using EmailSender.Application.Services;
 using System.Reflection;
+using EmailSender.Api;
 
+const string appEnvironmentVariableName = "ASPNETCORE_ENVIRONMENT";
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -35,11 +37,17 @@ builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
     }
 });
 
-builder.Services.AddApplication(configuration);
+var environmentName = Environment.GetEnvironmentVariable(appEnvironmentVariableName);
+
+if (environmentName == EnvironmentVariable.Debug || environmentName == EnvironmentVariable.Development)
+{
+    builder.Services.Configure<GoogleSmtpOptions>(configuration.GetSection(nameof(GoogleSmtpOptions)));
+    builder.Services.AddTransient<IEmailSender, GmailSender>();
+}
 
 var app = builder.Build();
 
-if (app.Environment.IsEnvironment("Debug"))
+if (app.Environment.IsEnvironment(EnvironmentVariable.Debug))
 {
     app.UseSwagger();
     app.UseSwaggerUI();

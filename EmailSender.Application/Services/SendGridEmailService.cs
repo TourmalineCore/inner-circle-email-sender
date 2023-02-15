@@ -1,8 +1,8 @@
-﻿using EmailSender.Application.Services.Options;
+﻿using EmailSender.Application.Models;
 using Microsoft.Extensions.Options;
-using EmailSender.Application.Models;
-using SendGrid;
 using SendGrid.Helpers.Mail;
+using SendGrid;
+using EmailSender.Application.Services.Options;
 
 namespace EmailSender.Application.Services
 {
