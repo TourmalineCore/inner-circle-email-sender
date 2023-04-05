@@ -32,6 +32,11 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v1
+      - name: Version
+        uses: WyriHaximus/github-action-helm3@v2
+        with:
+          exec: |
+            helm version
       - name: Deploy
         uses: WyriHaximus/github-action-helm3@v2
         with:
@@ -50,3 +55,4 @@ jobs:
             "${RELEASE_NAME}" \
             bitnami/aspnet-core
           kubeconfig: "${{ secrets.DEV_KUBECONFIG }}"
+        
