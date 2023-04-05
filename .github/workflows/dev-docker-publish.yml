@@ -37,6 +37,7 @@ jobs:
         with:
           exec: |
             RELEASE_NAME=emailsender-service-api
+            helm version
             helm repo add bitnami https://charts.bitnami.com/bitnami
             helm upgrade --install --namespace dev-inner-circle --create-namespace --values ./EmailSender.Api/ci/values-custom.yaml \
             --set "image.tag=${{ github.sha }}" \
