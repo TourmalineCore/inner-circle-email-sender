@@ -26,7 +26,7 @@ image:
 
   pullSecrets: []
     # https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_images.tpl#L49
-    # - "{{ include \"common.names.fullname\" . }}-docker-secret"
+    # - "{{ include \"aspnet-core.fullname\" . }}-docker-secret"
 
   pullCredentials: {}
     # username: login
@@ -43,12 +43,6 @@ args:
 ##
 bindURLs: http://+:80
 
-## @param podAnnotations Annotations for NGINX pods
-## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
-##
-# podAnnotations:
-#   checksum/config: "{{ include (print $.Template.BasePath \"/extra-list.yaml\") . | sha256sum }}"
-  
 # Here stored regular vars that passed to the pod environment
 extraConfigMapEnvVars: {}
   # Logging__LogLevel__Default: "Error"
@@ -66,14 +60,10 @@ extraSecretEnvVarsEncoded: |
 
 ## @param extraEnvVarsCM ConfigMap with extra environment variables
 ##
-extraEnvVarsCM: "{{ include \"common.names.fullname\" . }}"
+extraEnvVarsCM: "{{ include \"aspnet-core.fullname\" . }}"
 ## @param extraEnvVarsSecret Secret with extra environment variables
 ##
-
-# If you need secrets, than use line below 
-extraEnvVarsSecret: "{{ include \"common.names.fullname\" . }}"
-# else use
-# extraEnvVarsSecret: ""
+extraEnvVarsSecret: "{{ include \"aspnet-core.fullname\" . }}"
 
 ## @section ASP.NET Core deployment parameters
 ##
@@ -141,7 +131,7 @@ service:
 ingress:
   ## @param ingress.enabled Enable ingress record generation for ASP.NET Core
   ##
-  enabled: false
+  enabled: true
   ## @param ingress.pathType Ingress path type
   ##
   pathType: ImplementationSpecific
@@ -188,7 +178,7 @@ extraDeploy:
     apiVersion: v1
     kind: ConfigMap
     metadata:
-      name: {{ include "common.names.fullname" . }}
+      name: {{ include "aspnet-core.fullname" . }}
       namespace: {{ include "common.names.namespace" . | quote }}
       labels: {{- include "common.labels.standard" . | nindent 6 }}
         {{- if .Values.commonLabels }}
@@ -202,12 +192,10 @@ extraDeploy:
       {{- include "common.tplvalues.render" ( dict "value" .Values.extraConfigMapEnvVars "context" $ ) | nindent 6 }}
       {{- end }}
   - |
-    {{ $secret_name := printf "%s" ( include "common.names.fullname" .) }}
-    {{- if eq ( tpl .Values.extraEnvVarsSecret . ) $secret_name }}
     apiVersion: v1
     kind: Secret
     metadata:
-      name: {{ $secret_name }}
+      name: {{ include "aspnet-core.fullname" . }}
       namespace: {{ include "common.names.namespace" . | quote }}
       labels: {{- include "common.labels.standard" . | nindent 6 }}
         {{- if .Values.commonLabels }}
@@ -221,9 +209,8 @@ extraDeploy:
       {{- if .Values.extraSecretEnvVarsEncoded }}
       {{- include "common.tplvalues.render" ( dict "value" .Values.extraSecretEnvVarsEncoded "context" $ ) | trim | nindent 6 }}
       {{- end }}
-    {{- end }}
   - |
-    {{ $docker_secret_name := printf "%s%s" ( include "common.names.fullname" .) "-docker-secret" }}
+    {{ $docker_secret_name := printf "%s%s" ( include "aspnet-core.fullname" .) "-docker-secret" }}
     {{- if has $docker_secret_name .Values.image.pullSecrets }}
     apiVersion: v1
     kind: Secret
