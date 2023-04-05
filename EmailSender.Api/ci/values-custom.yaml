@@ -46,8 +46,8 @@ bindURLs: http://+:80
 ## @param podAnnotations Annotations for NGINX pods
 ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 ##
-# podAnnotations:
-#   checksum/config: "{{ include (print $.Template.BasePath \"/extra-list.yaml\") . | sha256sum }}"
+podAnnotations:
+  checksum/config: "{{ include (print $.Template.BasePath \"/extra-list.yaml\") . | sha256sum }}"
   
 # Here stored regular vars that passed to the pod environment
 extraConfigMapEnvVars: {}
@@ -61,7 +61,7 @@ extraSecretEnvVars: {}
 
 extraSecretEnvVarsEncoded: |
   {{- range $k, $v := .Values.extraSecretEnvVars }}
-  {{ $k }}: {{ $v | b64enc | quote}}
+  {{ $k }}: {{ $v | quote | b64enc | quote}}
   {{- end }}
 
 ## @param extraEnvVarsCM ConfigMap with extra environment variables
@@ -202,10 +202,12 @@ extraDeploy:
       {{- include "common.tplvalues.render" ( dict "value" .Values.extraConfigMapEnvVars "context" $ ) | nindent 6 }}
       {{- end }}
   - |
+    {{ $secret_name := printf "%s" ( include "common.names.fullname" .) }}
+    {{- if eq ( tpl .Values.extraEnvVarsSecret . ) $secret_name }}
     apiVersion: v1
     kind: Secret
     metadata:
-      name: {{ include "common.names.fullname" . }}
+      name: {{ $secret_name }}
       namespace: {{ include "common.names.namespace" . | quote }}
       labels: {{- include "common.labels.standard" . | nindent 6 }}
         {{- if .Values.commonLabels }}
@@ -219,6 +221,7 @@ extraDeploy:
       {{- if .Values.extraSecretEnvVarsEncoded }}
       {{- include "common.tplvalues.render" ( dict "value" .Values.extraSecretEnvVarsEncoded "context" $ ) | trim | nindent 6 }}
       {{- end }}
+    {{- end }}
   - |
     {{ $docker_secret_name := printf "%s%s" ( include "common.names.fullname" .) "-docker-secret" }}
     {{- if has $docker_secret_name .Values.image.pullSecrets }}
