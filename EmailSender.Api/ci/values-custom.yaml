@@ -13,7 +13,7 @@
 ##
 image:
   registry: ghcr.io
-  repository: tourmalinecore/inner-circle/emailsender-service-api
+  repository: tourmalinecore/inner-circle/email-sender-api
   tag: latest
   ## Optionally specify an array of imagePullSecrets.
   ## Secrets must be manually created in the namespace.

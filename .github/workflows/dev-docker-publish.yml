@@ -20,9 +20,9 @@ jobs:
       - name: Build and push image
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
-          docker build -t $GITHUB_REGISTRY/tourmalinecore/inner-circle/emailsender-service-api:latest -t $GITHUB_REGISTRY/tourmalinecore/inner-circle/emailsender-service-api:${{ github.sha }} -f EmailSender.Api/Dockerfile .
-          docker push $GITHUB_REGISTRY/tourmalinecore/inner-circle/emailsender-service-api:latest
-          docker push $GITHUB_REGISTRY/tourmalinecore/inner-circle/emailsender-service-api:${{ github.sha }}
+          docker build -t $GITHUB_REGISTRY/tourmalinecore/inner-circle/email-sender-api:latest -t $GITHUB_REGISTRY/tourmalinecore/inner-circle/email-sender-api:${{ github.sha }} -f EmailSender.Api/Dockerfile .
+          docker push $GITHUB_REGISTRY/tourmalinecore/inner-circle/email-sender-api:latest
+          docker push $GITHUB_REGISTRY/tourmalinecore/inner-circle/email-sender-api:${{ github.sha }}
 
   deploy-to-dev-k8s:
     needs: build-image
@@ -32,16 +32,11 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v1
-      - name: Version
-        uses: WyriHaximus/github-action-helm3@v3
-        with:
-          exec: |
-            helm version
       - name: Deploy
         uses: WyriHaximus/github-action-helm3@v3
         with:
           exec: |
-            RELEASE_NAME=emailsender-service-api
+            RELEASE_NAME=email-sender-api
             helm version
             helm repo add bitnami https://charts.bitnami.com/bitnami
             helm upgrade --install --namespace dev-inner-circle --create-namespace --values ./EmailSender.Api/ci/values-custom.yaml \
