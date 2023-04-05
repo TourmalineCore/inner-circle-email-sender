@@ -40,10 +40,6 @@ jobs:
             helm repo add bitnami https://charts.bitnami.com/bitnami
             helm upgrade --install --namespace dev-inner-circle --create-namespace --values ./EmailSender.Api/ci/values-custom.yaml \
             --set "image.tag=latest" \
-            --set "extraSecretEnvVars.GoogleSmtpOptions__Host=${{ secrets.DEV_MAIL_HOST }}" \
-            --set "extraSecretEnvVars.GoogleSmtpOptions__Port=${{ secrets.DEV_MAIL_PORT }}" \
-            --set "extraSecretEnvVars.GoogleSmtpOptions__FromEmail=${{ secrets.DEV_MAIL_FROM_EMAIL }}" \
-            --set "extraSecretEnvVars.GoogleSmtpOptions__FromPassword=${{ secrets.DEV_MAIL_FROM_PASSWORD }}" \
             "${RELEASE_NAME}" \
             bitnami/aspnet-core
           kubeconfig: "${{ secrets.DEV_KUBECONFIG }}"

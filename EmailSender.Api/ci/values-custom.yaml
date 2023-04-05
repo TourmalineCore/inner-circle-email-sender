@@ -202,12 +202,10 @@ extraDeploy:
       {{- include "common.tplvalues.render" ( dict "value" .Values.extraConfigMapEnvVars "context" $ ) | nindent 6 }}
       {{- end }}
   - |
-    {{ $secret_name := printf "%s" ( include "common.names.fullname" .) }}
-    {{- if eq ( tpl .Values.extraEnvVarsSecret . ) $secret_name }}
     apiVersion: v1
     kind: Secret
     metadata:
-      name: {{ $secret_name }}
+      name: {{ include "common.names.fullname" . }}
       namespace: {{ include "common.names.namespace" . | quote }}
       labels: {{- include "common.labels.standard" . | nindent 6 }}
         {{- if .Values.commonLabels }}
@@ -221,7 +219,6 @@ extraDeploy:
       {{- if .Values.extraSecretEnvVarsEncoded }}
       {{- include "common.tplvalues.render" ( dict "value" .Values.extraSecretEnvVarsEncoded "context" $ ) | trim | nindent 6 }}
       {{- end }}
-    {{- end }}
   - |
     {{ $docker_secret_name := printf "%s%s" ( include "common.names.fullname" .) "-docker-secret" }}
     {{- if has $docker_secret_name .Values.image.pullSecrets }}
