@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - develop
-      - fix-deploy-ci
+      - feature/fix-deploy-ci
   pull_request:
 
 env:
