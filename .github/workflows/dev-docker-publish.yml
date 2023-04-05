@@ -35,9 +35,6 @@ jobs:
       - name: Deploy
         uses: WyriHaximus/github-action-helm3@v3
         with:
-            # Disable ingress until resolve security issues
-            # --set "ingress.hostname=${{ secrets.DEV_HOST }}" \
-            # --set "ingress.enabled=true" \
           exec: |
             RELEASE_NAME=emailsender-service-api
             helm repo add bitnami https://charts.bitnami.com/bitnami
