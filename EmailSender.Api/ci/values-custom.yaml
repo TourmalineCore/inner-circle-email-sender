@@ -13,7 +13,7 @@
 ##
 image:
   registry: ghcr.io
-  repository: tourmalinecore/inner-circle/emailsender-service-api
+  repository: tourmalinecore/inner-circle/email-sender-api
   tag: latest
   ## Optionally specify an array of imagePullSecrets.
   ## Secrets must be manually created in the namespace.
@@ -48,7 +48,7 @@ bindURLs: http://+:80
 ##
 podAnnotations:
   checksum/config: "{{ include (print $.Template.BasePath \"/extra-list.yaml\") . | sha256sum }}"
-
+  
 # Here stored regular vars that passed to the pod environment
 extraConfigMapEnvVars: {}
   # Logging__LogLevel__Default: "Error"
@@ -61,7 +61,7 @@ extraSecretEnvVars: {}
 
 extraSecretEnvVarsEncoded: |
   {{- range $k, $v := .Values.extraSecretEnvVars }}
-  {{ $k }}: {{ $v | b64enc | quote}}
+  {{ $k }}: {{ $v | quote | b64enc | quote}}
   {{- end }}
 
 ## @param extraEnvVarsCM ConfigMap with extra environment variables
