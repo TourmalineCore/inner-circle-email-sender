@@ -33,11 +33,10 @@ jobs:
       - name: checkout
         uses: actions/checkout@v1
       - name: Deploy
-        uses: WyriHaximus/github-action-helm3@v3
+        uses: WyriHaximus/github-action-helm3@v2
         with:
           exec: |
             RELEASE_NAME=emailsender-service-api
-            helm version
             helm repo add bitnami https://charts.bitnami.com/bitnami
             helm upgrade --install --namespace dev-inner-circle --create-namespace --values ./EmailSender.Api/ci/values-custom.yaml \
             --set "image.tag=latest" \
@@ -48,5 +47,3 @@ jobs:
             "${RELEASE_NAME}" \
             bitnami/aspnet-core
           kubeconfig: "${{ secrets.DEV_KUBECONFIG }}"
-
-
