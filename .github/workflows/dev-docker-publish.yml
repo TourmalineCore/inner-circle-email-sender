@@ -11,21 +11,21 @@ env:
   GITHUB_REGISTRY: ghcr.io
 
 jobs:
-  build-image:
-    name: Build and push service image  
-    runs-on: ubuntu-22.04
-    steps:
-      - name: checkout
-        uses: actions/checkout@v1
-      - name: Build and push image
-        run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
-          docker build -t $GITHUB_REGISTRY/tourmalinecore/inner-circle/emailsender-service-api:latest -t $GITHUB_REGISTRY/tourmalinecore/inner-circle/emailsender-service-api:${{ github.sha }} -f EmailSender.Api/Dockerfile .
-          docker push $GITHUB_REGISTRY/tourmalinecore/inner-circle/emailsender-service-api:latest
-          docker push $GITHUB_REGISTRY/tourmalinecore/inner-circle/emailsender-service-api:${{ github.sha }}
+  # build-image:
+  #   name: Build and push service image  
+  #   runs-on: ubuntu-22.04
+  #   steps:
+  #     - name: checkout
+  #       uses: actions/checkout@v1
+  #     - name: Build and push image
+  #       run: |
+  #         echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+  #         docker build -t $GITHUB_REGISTRY/tourmalinecore/inner-circle/emailsender-service-api:latest -t $GITHUB_REGISTRY/tourmalinecore/inner-circle/emailsender-service-api:${{ github.sha }} -f EmailSender.Api/Dockerfile .
+  #         docker push $GITHUB_REGISTRY/tourmalinecore/inner-circle/emailsender-service-api:latest
+  #         docker push $GITHUB_REGISTRY/tourmalinecore/inner-circle/emailsender-service-api:${{ github.sha }}
 
   deploy-to-dev-k8s:
-    needs: build-image
+    # needs: build-image
     name: Deploy service to k8s for development environment  
     if: github.event_name == 'push'
     runs-on: ubuntu-22.04
@@ -37,9 +37,10 @@ jobs:
         with:
           exec: |
             RELEASE_NAME=emailsender-service-api
+            helm version
             helm repo add bitnami https://charts.bitnami.com/bitnami
             helm upgrade --install --namespace dev-inner-circle --create-namespace --values ./EmailSender.Api/ci/values-custom.yaml \
-            --set "image.tag=${{ github.sha }}" \
+            --set "image.tag=latest" \
             --set "extraSecretEnvVars.GoogleSmtpOptions__Host=${{ secrets.DEV_MAIL_HOST }}" \
             --set "extraSecretEnvVars.GoogleSmtpOptions__Port=${{ secrets.DEV_MAIL_PORT }}" \
             --set "extraSecretEnvVars.GoogleSmtpOptions__FromEmail=${{ secrets.DEV_MAIL_FROM_EMAIL }}" \
