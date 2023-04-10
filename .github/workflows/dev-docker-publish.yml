@@ -40,7 +40,7 @@ jobs:
             helm repo add bitnami https://charts.bitnami.com/bitnami
             helm upgrade --install --namespace dev-inner-circle --create-namespace --values ./EmailSender.Api/ci/values-custom.yaml \
             --set "image.tag=${{ github.sha }}" \
-            --set "ingress.enabled=false" \
+            --set "ingress.enabled=true" \
             --set "ingress.hostname=innercircle.dev.tourmalinecore.com" \
             --set "extraSecretEnvVars.GoogleSmtpOptions__Host=${{ secrets.DEV_MAIL_HOST }}" \
             --set "extraSecretEnvVars.GoogleSmtpOptions__Port=${{ secrets.DEV_MAIL_PORT }}" \
