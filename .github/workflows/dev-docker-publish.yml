@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - develop
-      - deploy-to-new-cluster
 
   pull_request:
 
