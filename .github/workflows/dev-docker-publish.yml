@@ -41,7 +41,7 @@ jobs:
             helm upgrade --install --namespace dev-inner-circle --create-namespace --values ./EmailSender.Api/ci/values-custom.yaml \
             --set "image.tag=${{ github.sha }}" \
             --set "ingress.enabled=true" \
-            --set "ingress.hostname=innercircle.dev.tourmalinecore.com" \
+            --set "ingress.hostname=${{ secrets.DEV_HOST }}" \
             --set "extraSecretEnvVars.GoogleSmtpOptions__Host=${{ secrets.DEV_MAIL_HOST }}" \
             --set "extraSecretEnvVars.GoogleSmtpOptions__Port=${{ secrets.DEV_MAIL_PORT }}" \
             --set "extraSecretEnvVars.GoogleSmtpOptions__FromEmail=${{ secrets.DEV_MAIL_FROM_EMAIL }}" \
