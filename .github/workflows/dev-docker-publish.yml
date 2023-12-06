@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+
   pull_request:
 
 env:
@@ -48,6 +49,6 @@ jobs:
             --set "extraSecretEnvVars.GoogleSmtpOptions__FromPassword=${{ secrets.DEV_MAIL_FROM_PASSWORD }}" \
             --set "extraConfigMapEnvVars.ASPNETCORE_ENVIRONMENT=Development" \
             "${RELEASE_NAME}" \
-            bitnami/aspnet-core
+            bitnami/aspnet-core --version 4.4.7
           kubeconfig: "${{ secrets.DEV_KUBECONFIG }}"
         
