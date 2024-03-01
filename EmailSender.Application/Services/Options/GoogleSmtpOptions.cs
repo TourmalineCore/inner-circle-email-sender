@@ -1,6 +1,6 @@
 ﻿namespace EmailSender.Application.Services.Options
 {
-    public class GoogleSmtpOptions
+    public class MailSmtpOptions
     {
         public string Host { get; set; }
         public string Port { get; set; }
