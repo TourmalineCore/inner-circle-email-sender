@@ -11,10 +11,10 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Debug
       - LOGS_PATH=/var/log/dev-email-sender
-      - GoogleSmtpOptions__Host=***secret***
-      - GoogleSmtpOptions__Port=***secret***
-      - GoogleSmtpOptions__FromEmail=***secret***
-      - GoogleSmtpOptions__FromPassword=***secret***
+      - MailSmtpOptions__Host=***secret***
+      - MailSmtpOptions__Port=***secret***
+      - MailSmtpOptions__FromEmail=***secret***
+      - MailSmtpOptions__FromPassword=***secret***
       - SendGridOptions__SendGridAPIKey=***secret***
       - SendGridOptions__SenderEmail=***secret***
       - SendGridOptions__SenderName=***secret***
