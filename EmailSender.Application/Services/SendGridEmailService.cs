@@ -31,5 +31,11 @@ namespace EmailSender.Application.Services
 
             await _client.SendEmailAsync(msg);
         }
+
+
+        public async Task SendEmailPayslipsAsync(MailPayslipsModel model)
+        {
+
+        }
     }
 }

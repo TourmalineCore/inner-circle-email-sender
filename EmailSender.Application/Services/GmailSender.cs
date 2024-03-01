@@ -30,5 +30,17 @@ namespace EmailSender.Application.Services
 
             await _client.SendMailAsync(email);
         }
+
+        public async Task SendEmailPayslipsAsync(MailPayslipsModel model)
+        {
+            var email = new MailMessage();
+            email.From = new MailAddress(_mailOptions.FromEmail);
+            email.To.Add(model.To);
+            email.Subject = model.Subject;
+            email.Body = model.File;
+
+            //
+            await _client.SendMailAsync(email);
+        }
     }
 }

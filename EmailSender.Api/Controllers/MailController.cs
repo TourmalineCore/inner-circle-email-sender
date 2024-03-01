@@ -8,6 +8,7 @@ namespace EmailSender.Api.Controllers
     public class MailController : Controller
     {
         private readonly IEmailSender _mailService;
+
         public MailController(IEmailSender mailService)
         {
             _mailService = mailService;
@@ -18,10 +19,17 @@ namespace EmailSender.Api.Controllers
         {
             await _mailService.SendEmailAsync(model);
         }
+
         [HttpPost("send-reset-link")]
         public async Task SendResetLink([FromBody] MailModel model)
         {
             await _mailService.SendEmailAsync(model);
+        }
+
+        [HttpPost("send-document")]
+        public async Task SendDocument([FromBody] MailPayslipsModel model)
+        {
+            await _mailService.SendEmailPayslipsAsync(model);
         }
     }
 }
