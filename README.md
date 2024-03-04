@@ -2,7 +2,7 @@
 Service for sending emails via smtp
 
 ## Email senders
-In this service we use several senders ("Google SMTP", "SendGrid") for sending emails to recipients.
+In this service we use several senders ("Mail SMTP", "SendGrid") for sending emails to recipients.
 
 ## Send Grid
 You must have an account with API key that you will use in this app.
@@ -10,12 +10,12 @@ If you don't have an account, you can create it [here](https://sendgrid.com/pric
 
 #### Notice: make sure that you don't push your SendGrid credentials in this repo. Otherwise, SendGrid can block your account
 
-## Google SMTP
+## Mail SMTP
 We use this sender in "Debug" and "Development" mode.  
-To use the service, you need to create a password for external applications on your account. To do that check the [link](https://support.google.com/accounts/answer/185833?hl=en).  
-Also check an [article](https://support.google.com/mail/answer/7126229?hl=en) to configure Google SMTP.
+To use the service, you need to create a password for external applications on your account. To do that check the [link](https://help.mail.ru/mail/security/protection/external/).  
+Also check an [article](https://help.mail.ru/mail/mailer/popsmtp/) to configure Mail SMTP.
 
-#### Notice: make sure that you don't push your Gmail SMTP credentials in this repo.
+#### Notice: make sure that you don't push your Mail SMTP credentials in this repo.
 
 ## Launch docker containers
 
@@ -23,11 +23,11 @@ Also check an [article](https://support.google.com/mail/answer/7126229?hl=en) to
 
 2. Enter options of your email sender in `docker-compose.yml`:
 
-If you use the Google SMTP, fill out the following variables:
-- GoogleSmtpOptions__Host
-- GoogleSmtpOptions__Port
-- GoogleSmtpOptions__FromEmail
-- GoogleSmtpOptions__FromPassword
+If you use the Mail SMTP, fill out the following variables:
+- MailSmtpOptions__Host
+- MailSmtpOptions__Port
+- MailSmtpOptions__FromEmail
+- MailSmtpOptions__FromPassword
 
 If you use Send Grid, fill out:  
 - SendGridOptions__SendGridAPIKey

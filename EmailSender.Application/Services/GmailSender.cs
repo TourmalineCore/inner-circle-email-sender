@@ -7,10 +7,10 @@ namespace EmailSender.Application.Services
 {
     public class GmailSender : IEmailSender
     {
-        private readonly GoogleSmtpOptions _mailOptions;
+        private readonly MailSmtpOptions _mailOptions;
         private readonly SmtpClient _client;
 
-        public GmailSender(IOptions<GoogleSmtpOptions> mailOptions)
+        public GmailSender(IOptions<MailSmtpOptions> mailOptions)
         {
             _mailOptions = mailOptions.Value;
             _client = new SmtpClient(_mailOptions.Host, int.Parse(_mailOptions.Port));
