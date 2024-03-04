@@ -39,7 +39,7 @@ builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
 
 var environmentName = Environment.GetEnvironmentVariable(appEnvironmentVariableName);
 
-if (environmentName == EnvironmentVariable.Debug || environmentName == EnvironmentVariable.Development)
+if (environmentName == EnvironmentVariable.Debug.ToString() || environmentName == EnvironmentVariable.Development.ToString())
 {
     builder.Services.Configure<MailSmtpOptions>(configuration.GetSection(nameof(MailSmtpOptions)));
     builder.Services.AddTransient<IEmailSender, GmailSender>();
@@ -47,7 +47,7 @@ if (environmentName == EnvironmentVariable.Debug || environmentName == Environme
 
 var app = builder.Build();
 
-if (app.Environment.IsEnvironment(EnvironmentVariable.Debug))
+if (app.Environment.IsEnvironment(EnvironmentVariable.Debug.ToString()))
 {
     app.UseSwagger();
     app.UseSwaggerUI();
