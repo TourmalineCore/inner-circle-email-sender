@@ -27,9 +27,10 @@ namespace EmailSender.Api.Controllers
         }
 
         [HttpPost("send-document")]
-        public async Task SendDocument([FromBody] MailPayslipsModel model)
+        [Consumes("multipart/form-data")]
+        public async Task SendDocument([FromForm] MailFileModel model)
         {
-            await _mailService.SendEmailPayslipsAsync(model);
+            await _mailService.SendEmailFileAsync(model);
         }
     }
 }

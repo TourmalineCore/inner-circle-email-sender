@@ -1,5 +1,6 @@
 ﻿using EmailSender.Application.Models;
 using EmailSender.Application.Services.Options;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System.Net.Mail;
 
@@ -31,15 +32,20 @@ namespace EmailSender.Application.Services
             await _client.SendMailAsync(email);
         }
 
-        public async Task SendEmailPayslipsAsync(MailPayslipsModel model)
+        public async Task SendEmailFileAsync(MailFileModel mailFileModel)
         {
             var email = new MailMessage();
-            email.From = new MailAddress(_mailOptions.FromEmail);
-            email.To.Add(model.To);
-            email.Subject = model.Subject;
-            email.Body = model.File;
 
-            //
+            await using var stream = mailFileModel.File.OpenReadStream();
+
+            var attachment = new Attachment(stream, mailFileModel.File.FileName);
+            email.Attachments.Add(attachment);
+
+            email.From = new MailAddress(_mailOptions.FromEmail);
+            email.To.Add(mailFileModel.To);
+            email.Subject = mailFileModel.Subject;
+            email.Body = mailFileModel.Body;
+
             await _client.SendMailAsync(email);
         }
     }

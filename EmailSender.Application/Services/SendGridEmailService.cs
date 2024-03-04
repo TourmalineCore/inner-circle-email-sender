@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using SendGrid.Helpers.Mail;
 using SendGrid;
 using EmailSender.Application.Services.Options;
+using Microsoft.AspNetCore.Http;
 
 namespace EmailSender.Application.Services
 {
@@ -32,10 +33,9 @@ namespace EmailSender.Application.Services
             await _client.SendEmailAsync(msg);
         }
 
-
-        public async Task SendEmailPayslipsAsync(MailPayslipsModel model)
+        //TODO 
+        public async Task SendEmailFileAsync(MailFileModel mailFileModel)
         {
-
         }
     }
 }
