@@ -41,7 +41,7 @@ var environmentName = Environment.GetEnvironmentVariable(appEnvironmentVariableN
 
 if (environmentName == EnvironmentVariable.Debug || environmentName == EnvironmentVariable.Development)
 {
-    builder.Services.Configure<GoogleSmtpOptions>(configuration.GetSection(nameof(GoogleSmtpOptions)));
+    builder.Services.Configure<MailSmtpOptions>(configuration.GetSection(nameof(MailSmtpOptions)));
     builder.Services.AddTransient<IEmailSender, GmailSender>();
 }
 
