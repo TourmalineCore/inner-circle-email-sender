@@ -1,7 +1,7 @@
 ﻿namespace EmailSender.Api;
 
-public static class EnvironmentVariable
+public enum EnvironmentVariable
 {
-    public static string Debug = "Debug";
-    public static string Development = "Development";
+    Debug,
+    Development,
 }
