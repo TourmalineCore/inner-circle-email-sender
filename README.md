@@ -15,7 +15,7 @@ We use this sender in "Debug" and "Development" mode.
 To use the service, you need to create a password for external applications on your account. To do that check the [link](https://help.mail.ru/mail/security/protection/external/).  
 Also check an [article](https://help.mail.ru/mail/mailer/popsmtp/) to configure Mail SMTP.
 
-#### Notice: make sure that you don't push your Gmail SMTP credentials in this repo.
+#### Notice: make sure that you don't push your Mail SMTP credentials in this repo.
 
 ## Launch docker containers
 
