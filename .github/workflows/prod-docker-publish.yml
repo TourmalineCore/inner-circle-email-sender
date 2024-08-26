@@ -5,47 +5,50 @@ on:
     branches:
       - master
 
-    tags:
-      - v*
-
   pull_request:
 
 env:
   GITHUB_REGISTRY: ghcr.io
 
 jobs:
-  deploy-to-dev-k8s:
-    name: Deploy service to k8s for production environment
-    if: github.event_name == 'push'
+  build-image:
+    name: Build and push service image  
     runs-on: ubuntu-22.04
-
     steps:
       - name: checkout
         uses: actions/checkout@v1
       - name: Build and push image
         run: |
-          docker login ${{ env.GITHUB_REGISTRY }} -u ${{ github.actor }} -p ${{ secrets.GH_REGISTRY_TOKEN }}
-          docker build -t $GITHUB_REGISTRY/tourmalinecore/inner-circle/prod-emailsender-service:latest -t $GITHUB_REGISTRY/tourmalinecore/inner-circle/prod-emailsender-service:${{ github.sha }} -f EmailSender.Api/Dockerfile .
-          docker push $GITHUB_REGISTRY/tourmalinecore/inner-circle/prod-emailsender-service:latest
-          docker push $GITHUB_REGISTRY/tourmalinecore/inner-circle/prod-emailsender-service:${{ github.sha }}
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+          docker build -t $GITHUB_REGISTRY/tourmalinecore/inner-circle/email-sender-api:latest -t $GITHUB_REGISTRY/tourmalinecore/inner-circle/email-sender-api:${{ github.sha }} -f EmailSender.Api/Dockerfile .
+          docker push $GITHUB_REGISTRY/tourmalinecore/inner-circle/email-sender-api:latest
+          docker push $GITHUB_REGISTRY/tourmalinecore/inner-circle/email-sender-api:${{ github.sha }}
+
+  deploy-to-dev-k8s:
+    needs: build-image
+    name: Deploy service to k8s for prod environment  
+    if: github.event_name == 'push'
+    runs-on: ubuntu-22.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v1
       - name: Deploy
-        uses: WyriHaximus/github-action-helm3@v2
+        uses: WyriHaximus/github-action-helm3@v3
         with:
-          exec:
-            helm upgrade --namespace prod-inner-circle --create-namespace --install prod-emailsender-service
-            --set "aspnetcoreEnvironment=Production"
-            --set "ingress.host"=${{ secrets.PROD_HOST }}
-            --set "deployment.appsettings.GoogleSmtpOptions.Host=${{ secrets.PROD_MAIL_HOST }}"
-            --set "deployment.appsettings.GoogleSmtpOptions.Port=${{ secrets.PROD_MAIL_PORT }}"
-            --set "deployment.appsettings.GoogleSmtpOptions.FromEmail=${{ secrets.PROD_MAIL_FROM_EMAIL }}"
-            --set "deployment.appsettings.GoogleSmtpOptions.FromPassword=${{ secrets.PROD_MAIL_FROM_PASSWORD }}"
-            --set "resources.limits.cpu=${{ secrets.PROD_APP_CPU_LIMIT }}"
-            --set "resources.limits.memory=${{ secrets.PROD_APP_MEMORY_LIMIT }}"
-            --set "resources.requests.cpu=${{ secrets.PROD_APP_CPU_REQUESTS }}"
-            --set "resources.requests.memory=${{ secrets.PROD_APP_MEMORY_REQUESTS }}"
-            --set "imageCredentials.username=${{ github.actor }}"
-            --set "imageCredentials.password=${{ secrets.GH_REGISTRY_TOKEN }}"
-            --set "image.tag=${{ github.sha }}"
-            --set "image.pullPolicy=Always"
-            ./EmailSender.Api/ci/chart
-          kubeconfig: "${{ secrets.PROD_KUBECONFIG }}"
+          exec: |
+            RELEASE_NAME=email-sender-api
+            helm version
+            helm repo add bitnami https://charts.bitnami.com/bitnami
+            helm upgrade --install --namespace dev-inner-circle --create-namespace --values ./EmailSender.Api/ci/values-custom.yaml \
+            --set "image.tag=${{ github.sha }}" \
+            --set "ingress.enabled=true" \
+            --set "ingress.hostname=${{ secrets.DEV_HOST }}" \
+            --set "extraSecretEnvVars.MailSmtpOptions__Host=${{ secrets.DEV_MAIL_HOST }}" \
+            --set "extraSecretEnvVars.MailSmtpOptions__Port=${{ secrets.DEV_MAIL_PORT }}" \
+            --set "extraSecretEnvVars.MailSmtpOptions__FromEmail=${{ secrets.DEV_MAIL_FROM_EMAIL }}" \
+            --set "extraSecretEnvVars.MailSmtpOptions__FromPassword=${{ secrets.DEV_MAIL_FROM_PASSWORD }}" \
+            --set "extraConfigMapEnvVars.ASPNETCORE_ENVIRONMENT=Development" \
+            "${RELEASE_NAME}" \
+            bitnami/aspnet-core --version 4.4.7
+          kubeconfig: "${{ secrets.DEV_KUBECONFIG }}"
+        
