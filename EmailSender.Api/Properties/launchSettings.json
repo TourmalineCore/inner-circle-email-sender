@@ -1,0 +1,18 @@
+{
+  "profiles": {
+    "EmailSender.Api": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Debug"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:5015"
+    }
+  },
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true
+  }
+}

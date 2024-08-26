@@ -1,0 +1,13 @@
+# The description of ignoring files in the wildberries analytics project
+
+# misc
+bin/
+obj/
+*/logs/
+.vs
+*.sln.DotSettings.user
+*.csproj.user
+docker-compose.yml
+
+# storage for pgadmin
+*/pgadmin/sessions/
