@@ -1,6 +1,6 @@
-﻿using EmailSender.Application.Models;
+﻿using Application.Models;
 
-namespace EmailSender.Application.Services;
+namespace Application.Services;
 
 public interface IEmailSender
 {

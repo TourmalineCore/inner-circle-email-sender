@@ -1,9 +1,9 @@
-﻿using EmailSender.Application.Models;
-using EmailSender.Application.Services.Options;
+﻿using Application.Models;
+using Application.Services.Options;
 using Microsoft.Extensions.Options;
 using System.Net.Mail;
 
-namespace EmailSender.Application.Services;
+namespace Application.Services;
 
 public class GmailSender : IEmailSender
 {

@@ -1,7 +1,7 @@
-using EmailSender.Application.Services.Options;
-using EmailSender.Application.Services;
 using System.Reflection;
-using EmailSender.Api;
+using Api;
+using Application.Services;
+using Application.Services.Options;
 
 const string appEnvironmentVariableName = "ASPNETCORE_ENVIRONMENT";
 var builder = WebApplication.CreateBuilder(args);

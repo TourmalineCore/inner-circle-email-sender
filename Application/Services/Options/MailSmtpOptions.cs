@@ -1,4 +1,4 @@
-﻿namespace EmailSender.Application.Services.Options;
+﻿namespace Application.Services.Options;
 
 public class MailSmtpOptions
 {

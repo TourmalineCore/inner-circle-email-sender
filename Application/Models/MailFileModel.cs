@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace EmailSender.Application.Models;
+namespace Application.Models;
 
 public class MailFileModel
 {

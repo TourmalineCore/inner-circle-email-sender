@@ -1,8 +1,8 @@
-﻿using EmailSender.Application.Models;
-using EmailSender.Application.Services;
+﻿using Application.Models;
+using Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EmailSender.Api.Controllers;
+namespace Api.Controllers;
 
 [Route("api/mail")]
 public class MailController : Controller
