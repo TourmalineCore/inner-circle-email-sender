@@ -20,7 +20,7 @@ jobs:
       - name: Build and push image
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
-          docker build -t $GITHUB_REGISTRY/tourmalinecore/inner-circle/email-sender-api:latest -t $GITHUB_REGISTRY/tourmalinecore/inner-circle/email-sender-api:${{ github.sha }} -f EmailSender.Api/Dockerfile .
+          docker build -t $GITHUB_REGISTRY/tourmalinecore/inner-circle/email-sender-api:latest -t $GITHUB_REGISTRY/tourmalinecore/inner-circle/email-sender-api:${{ github.sha }} -f Api/Dockerfile .
           docker push $GITHUB_REGISTRY/tourmalinecore/inner-circle/email-sender-api:latest
           docker push $GITHUB_REGISTRY/tourmalinecore/inner-circle/email-sender-api:${{ github.sha }}
 
@@ -39,7 +39,7 @@ jobs:
             RELEASE_NAME=email-sender-api
             helm version
             helm repo add bitnami https://charts.bitnami.com/bitnami
-            helm upgrade --install --namespace dev-inner-circle --create-namespace --values ./EmailSender.Api/ci/values-custom.yaml \
+            helm upgrade --install --namespace dev-inner-circle --create-namespace --values ./Api/ci/values-custom.yaml \
             --set "image.tag=${{ github.sha }}" \
             --set "ingress.enabled=true" \
             --set "ingress.hostname=${{ secrets.DEV_HOST }}" \
