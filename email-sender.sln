@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailSender.Api", "EmailSender.Api\EmailSender.Api.csproj", "{BF0DFABE-79ED-42D5-B624-A686A7E54160}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "EmailSender.Api\Api.csproj", "{BF0DFABE-79ED-42D5-B624-A686A7E54160}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailSender.Application", "EmailSender.Application\EmailSender.Application.csproj", "{5AB73E19-C6FB-4132-955E-48AE14C533D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "EmailSender.Application\Application.csproj", "{5AB73E19-C6FB-4132-955E-48AE14C533D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
