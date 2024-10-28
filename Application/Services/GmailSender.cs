@@ -29,6 +29,7 @@ public class GmailSender : IEmailSender
         email.Body = mailModel.Body;
 
         await _client.SendMailAsync(email);
+        Console.WriteLine("*** Welcome mail was sent!");
     }
 
     public async Task SendEmailFileAsync(MailFileModel mailFileModel)
