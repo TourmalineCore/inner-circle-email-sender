@@ -5,14 +5,10 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Debug"
+        "ASPNETCORE_ENVIRONMENT": "MockForDevelopment"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:5015"
+      "applicationUrl": "http://localhost:5005"
     }
-  },
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true
   }
 }
