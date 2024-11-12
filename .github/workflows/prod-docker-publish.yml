@@ -4,14 +4,13 @@ on:
   push:
     branches:
       - master
-      - feature/decrease-limits
-
   pull_request:
 
 env:
   GITHUB_REGISTRY: ghcr.io
 
 jobs:
+  
   build-image:
     name: Build and push service image  
     runs-on: ubuntu-22.04
