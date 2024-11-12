@@ -1,4 +1,4 @@
-﻿using Application.Models;
+using Application.Models;
 using Application.Services;
 using Microsoft.AspNetCore.Mvc;
 

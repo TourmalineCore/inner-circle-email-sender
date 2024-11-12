@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Options;
-using SendGrid.Helpers.Mail;
-using SendGrid;
 using Application.Models;
 using Application.Services.Options;
+using Microsoft.Extensions.Options;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace Application.Services;
 
