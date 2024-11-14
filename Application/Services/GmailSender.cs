@@ -1,7 +1,7 @@
-﻿using Application.Models;
+using System.Net.Mail;
+using Application.Models;
 using Application.Services.Options;
 using Microsoft.Extensions.Options;
-using System.Net.Mail;
 
 namespace Application.Services;
 

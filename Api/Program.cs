@@ -63,7 +63,7 @@ app.UseCors(
     .AllowAnyOrigin()
 );
 
-app.UseEndpoints(endpoints => { endpoints.MapControllers();});
+app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
 
 app.Run();
