@@ -4,6 +4,6 @@ namespace Application.Services;
 
 public interface IEmailSender
 {
-    Task SendEmailAsync(MailModel mailModel);
-    Task SendEmailFileAsync(MailFileModel mailFileModel);
+  Task SendEmailAsync(MailModel mailModel);
+  Task SendEmailFileAsync(MailFileModel mailFileModel);
 }
