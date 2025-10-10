@@ -41,5 +41,5 @@ jobs:
             --state-values-set extraSecretEnvVars.MailSmtpOptions__Port=${{ secrets.DEV_MAIL_PORT }}
             --state-values-set extraSecretEnvVars.MailSmtpOptions__FromEmail=${{ secrets.DEV_MAIL_FROM_EMAIL }}
             --state-values-set extraSecretEnvVars.MailSmtpOptions__FromPassword=${{ secrets.DEV_MAIL_FROM_PASSWORD }}
-            --state-values-set extraSecretEnvVars.ASPNETCORE_ENVIRONMENT=Development
+            --state-values-set extraConfigMapEnvVars.ASPNETCORE_ENVIRONMENT=Development
           helmfile-auto-init: "false"
