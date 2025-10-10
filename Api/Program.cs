@@ -14,49 +14,50 @@ var configuration = builder.Configuration;
 
 builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
 {
-    var env = hostingContext.HostingEnvironment;
+  var env = hostingContext.HostingEnvironment;
 
-    var reloadOnChange = hostingContext.Configuration.GetValue("hostBuilder:reloadConfigOnChange", true);
+  var reloadOnChange = hostingContext.Configuration.GetValue("hostBuilder:reloadConfigOnChange", true);
 
-    config.AddJsonFile("appsettings.json", true, reloadOnChange)
-        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, reloadOnChange)
-        .AddJsonFile("appsettings.Active.json", true, reloadOnChange);
+  config
+    .AddJsonFile("appsettings.json", true, reloadOnChange)
+    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, reloadOnChange)
+    .AddJsonFile("appsettings.Active.json", true, reloadOnChange);
 
-    if (env.IsDevelopment() && !string.IsNullOrEmpty(env.ApplicationName))
-    {
-        var appAssembly = Assembly.Load(new AssemblyName(env.ApplicationName));
+  if (env.IsDevelopment() && !string.IsNullOrEmpty(env.ApplicationName))
+  {
+    var appAssembly = Assembly.Load(new AssemblyName(env.ApplicationName));
 
-        config.AddUserSecrets(appAssembly, true);
-    }
+    config.AddUserSecrets(appAssembly, true);
+  }
 
-    config.AddEnvironmentVariables();
+  config.AddEnvironmentVariables();
 
-    if (args != null)
-    {
-        config.AddCommandLine(args);
-    }
+  if (args != null)
+  {
+    config.AddCommandLine(args);
+  }
 });
 
 var environmentName = Environment.GetEnvironmentVariable(appEnvironmentVariableName);
 
 if (environmentName == EnvironmentVariable.Debug.ToString() || environmentName == EnvironmentVariable.Development.ToString())
 {
-    builder.Services.Configure<MailSmtpOptions>(configuration.GetSection(nameof(MailSmtpOptions)));
-    builder.Services.AddTransient<IEmailSender, GmailSender>();
+  builder.Services.Configure<MailSmtpOptions>(configuration.GetSection(nameof(MailSmtpOptions)));
+  builder.Services.AddTransient<IEmailSender, GmailSender>();
 }
 
 var app = builder.Build();
 
 if (app.Environment.IsEnvironment(EnvironmentVariable.Debug.ToString()))
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+  app.UseSwagger();
+  app.UseSwaggerUI();
 }
 
 app.UseRouting();
 
 app.UseCors(
-    corsPolicyBuilder => corsPolicyBuilder
+  corsPolicyBuilder => corsPolicyBuilder
     .AllowAnyHeader()
     .SetIsOriginAllowed(host => true)
     .AllowAnyMethod()
@@ -64,6 +65,5 @@ app.UseCors(
 );
 
 app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-
 
 app.Run();
