@@ -1,24 +1,24 @@
-repositories:
-  - name: bitnami
-    url: https://charts.bitnami.com/bitnami
+# repositories:
+#   - name: bitnami
+#     url: https://charts.bitnami.com/bitnami
 
-releases:
-  - name: email-sender-api
-    labels:
-      app: email-sender-api
-    wait: true
-    chart: bitnami/aspnet-core
-    version: 4.4.7
-    values:
-      - values.yaml
-      - image:
-          tag: "{{ .StateValues.image.tag }}"
-      - ingress:
-          hostname: "{{ .StateValues.ingress.hostname }}"
-      - extraSecretEnvVars:
-          MailSmtpOptions__Host: "{{ .StateValues.extraSecretEnvVars.MailSmtpOptions__Host }}"
-          MailSmtpOptions__Port: "{{ .StateValues.extraSecretEnvVars.MailSmtpOptions__Port }}"
-          MailSmtpOptions__FromEmail: "{{ .StateValues.extraSecretEnvVars.MailSmtpOptions__FromEmail }}"
-          MailSmtpOptions__FromPassword: "{{ .StateValues.extraSecretEnvVars.MailSmtpOptions__FromPassword }}"
-      - extraConfigMapEnvVars:
-          ASPNETCORE_ENVIRONMENT: "{{ .StateValues.extraConfigMapEnvVars.ASPNETCORE_ENVIRONMENT }}"
+# releases:
+#   - name: email-sender-api
+#     labels:
+#       app: email-sender-api
+#     wait: true
+#     chart: bitnami/aspnet-core
+#     version: 4.4.7
+#     values:
+#       - values.yaml
+#       - image:
+#           tag: "{{ .StateValues.image.tag }}"
+#       - ingress:
+#           hostname: "{{ .StateValues.ingress.hostname }}"
+#       - extraSecretEnvVars:
+#           MailSmtpOptions__Host: "{{ .StateValues.extraSecretEnvVars.MailSmtpOptions__Host }}"
+#           MailSmtpOptions__Port: "{{ .StateValues.extraSecretEnvVars.MailSmtpOptions__Port }}"
+#           MailSmtpOptions__FromEmail: "{{ .StateValues.extraSecretEnvVars.MailSmtpOptions__FromEmail }}"
+#           MailSmtpOptions__FromPassword: "{{ .StateValues.extraSecretEnvVars.MailSmtpOptions__FromPassword }}"
+#       - extraConfigMapEnvVars:
+#           ASPNETCORE_ENVIRONMENT: "{{ .StateValues.extraConfigMapEnvVars.ASPNETCORE_ENVIRONMENT }}"
