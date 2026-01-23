@@ -22,8 +22,8 @@ jobs:
             helmfile cache cleanup && helmfile apply --suppress-diff --namespace ${{ secrets.INNER_CIRCLE_PROD_NAMESPACE }} -f Api/ci/helmfile.yaml \
             --state-values-set image.tag=sha-${{ github.sha }} \
             --state-values-set ingress.hostname=${{ secrets.INNER_CIRCLE_PROD_HOSTNAME  }} \ 
-            --state-values-set extraSecretEnvVars.MailSmtpOptions__Host=${{ secrets.INNER_CIRCLE_PROD_MAIL_SMTP_HOST }} \
             --state-values-set extraSecretEnvVars.MailSmtpOptions__Port=${{ secrets.INNER_CIRCLE_PROD_MAIL_SMTP_PORT }} \
+            --state-values-set extraSecretEnvVars.MailSmtpOptions__Host=${{ secrets.INNER_CIRCLE_PROD_MAIL_SMTP_HOST }} \
             --state-values-set extraSecretEnvVars.MailSmtpOptions__FromEmail=${{ secrets.INNER_CIRCLE_PROD_MAIL_SMTP_FROM_EMAIL }} \
             --state-values-set extraSecretEnvVars.MailSmtpOptions__FromPassword=${{ secrets.INNER_CIRCLE_PROD_MAIL_SMTP_FROM_PASSWORD }} \
             --state-values-set extraConfigMapEnvVars.ASPNETCORE_ENVIRONMENT=Development > /dev/null 2>&1
