@@ -18,12 +18,17 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Deploy
+        env:
+          INNER_CIRCLE_PROD_MAIL_SMTP_PORT: ${{ secrets.INNER_CIRCLE_PROD_MAIL_SMTP_PORT }}
+          INNER_CIRCLE_PROD_MAIL_SMTP_HOST: ${{ secrets.DEV_MAIL_HOST }}
+          INNER_CIRCLE_PROD_MAIL_SMTP_FROM_EMAIL: ${{ secrets.INNER_CIRCLE_PROD_MAIL_SMTP_FROM_EMAIL }}
+          INNER_CIRCLE_PROD_MAIL_SMTP_FROM_PASSWORD: ${{ secrets.INNER_CIRCLE_PROD_MAIL_SMTP_FROM_PASSWORD }}
         run: |
             helmfile cache cleanup && helmfile apply --suppress-diff --namespace "${{ secrets.INNER_CIRCLE_PROD_NAMESPACE }}" -f Api/ci/helmfile.yaml \
             --state-values-set image.tag="sha-${{ github.sha }}" \
             --state-values-set ingress.hostname="${{ secrets.INNER_CIRCLE_PROD_HOSTNAME }}" \ 
-            --state-values-set extraSecretEnvVars.MailSmtpOptions__Port="${{ secrets.INNER_CIRCLE_PROD_MAIL_SMTP_PORT }}" \
-            --state-values-set extraSecretEnvVars.MailSmtpOptions__Host="${{ secrets.DEV_MAIL_HOST }}" \
-            --state-values-set extraSecretEnvVars.MailSmtpOptions__FromEmail="${{ secrets.INNER_CIRCLE_PROD_MAIL_SMTP_FROM_EMAIL }}" \
-            --state-values-set extraSecretEnvVars.MailSmtpOptions__FromPassword="${{ secrets.INNER_CIRCLE_PROD_MAIL_SMTP_FROM_PASSWORD }}" \
+            --state-values-set extraSecretEnvVars.MailSmtpOptions__Port="$INNER_CIRCLE_PROD_MAIL_SMTP_PORT" \
+            --state-values-set extraSecretEnvVars.MailSmtpOptions__Host="$INNER_CIRCLE_PROD_MAIL_SMTP_HOST" \
+            --state-values-set extraSecretEnvVars.MailSmtpOptions__FromEmail="$INNER_CIRCLE_PROD_MAIL_SMTP_FROM_EMAIL" \
+            --state-values-set extraSecretEnvVars.MailSmtpOptions__FromPassword="$INNER_CIRCLE_PROD_MAIL_SMTP_FROM_PASSWORD" \
             --state-values-set extraConfigMapEnvVars.ASPNETCORE_ENVIRONMENT=Development > /dev/null 2>&1
