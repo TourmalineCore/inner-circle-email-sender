@@ -21,10 +21,12 @@ jobs:
       - name: Add Registry Image Env Var With Lowercase Organization and Repo Name
         run: |
           echo "REGISTRY_IMAGE=ghcr.io/${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+
       - name: Prepare
         run: |
           platform=linux/amd64
           echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
+
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
@@ -78,10 +80,12 @@ jobs:
       - name: Add Registry Image Env Var With Lowercase Organization and Repo Name
         run: |
           echo "REGISTRY_IMAGE=ghcr.io/${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+
       - name: Prepare
         run: |
           platform=linux/arm64
           echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
+
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
