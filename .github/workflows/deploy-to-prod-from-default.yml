@@ -25,4 +25,5 @@ jobs:
             --state-values-set extraSecretEnvVars.MailSmtpOptions__Port="${{ secrets.INNER_CIRCLE_PROD_MAIL_SMTP_PORT }}" \
             --state-values-set extraSecretEnvVars.MailSmtpOptions__FromEmail="${{ secrets.INNER_CIRCLE_PROD_MAIL_SMTP_FROM_EMAIL }}" \
             --state-values-set extraSecretEnvVars.MailSmtpOptions__FromPassword="${{ secrets.INNER_CIRCLE_PROD_MAIL_SMTP_FROM_PASSWORD }}" \
-            --state-values-set extraConfigMapEnvVars.ASPNETCORE_ENVIRONMENT=Development > /dev/null 2>&1
+            --state-values-set extraConfigMapEnvVars.ASPNETCORE_ENVIRONMENT=Development \
+            > "/var/log/inner-circle/deploy/$(date +%F)-${{ github.event.repository.name }}-run-${{ github.run_id }}-job-${{ job.check_run_id }}.log" 2>&1
