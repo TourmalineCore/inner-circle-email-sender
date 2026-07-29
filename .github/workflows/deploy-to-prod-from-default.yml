@@ -11,6 +11,8 @@ jobs:
 
   deploy-to-prod:
     needs: [docker-build-and-push]
+    # need to run on our own runners that we have access to the logs later on our servers
+    # otherwise, if we use shared runners they store log files in their VMs which we cannot access
     runs-on: self-hosted
     steps:
       - name: Check out the repo
@@ -18,12 +20,15 @@ jobs:
 
       - name: Deploy
         run: |
-          helmfile cache cleanup && helmfile apply --suppress-diff --namespace "${{ secrets.INNER_CIRCLE_PROD_NAMESPACE }}" -f Api/ci/helmfile.yaml \
+          helmfile cache cleanup && helmfile apply --namespace "${{ secrets.INNER_CIRCLE_PROD_NAMESPACE }}" -f Api/ci/helmfile.yaml \
             --state-values-set image.tag="sha-${{ github.sha }}" \
             --state-values-set ingress.hostname="${{ secrets.INNER_CIRCLE_PROD_HOSTNAME }}" \
             --state-values-set extraSecretEnvVars.MailSmtpOptions__Host="${{ secrets.INNER_CIRCLE_PROD_MAIL_SMTP_HOST }}" \
             --state-values-set extraSecretEnvVars.MailSmtpOptions__Port="${{ secrets.INNER_CIRCLE_PROD_MAIL_SMTP_PORT }}" \
             --state-values-set extraSecretEnvVars.MailSmtpOptions__FromEmail="${{ secrets.INNER_CIRCLE_PROD_MAIL_SMTP_FROM_EMAIL }}" \
             --state-values-set extraSecretEnvVars.MailSmtpOptions__FromPassword="${{ secrets.INNER_CIRCLE_PROD_MAIL_SMTP_FROM_PASSWORD }}" \
-            --state-values-set extraConfigMapEnvVars.ASPNETCORE_ENVIRONMENT=Development \
-            > "/var/log/inner-circle/deploy/$(date +%F)-${{ github.event.repository.name }}-run-${{ github.run_id }}-job-${{ job.check_run_id }}.log" 2>&1
+            --state-values-set extraConfigMapEnvVars.ASPNETCORE_ENVIRONMENT=Development > "/var/log/inner-circle/deploy/$(date +%F)-${{ github.event.repository.name }}-run-${{ github.run_id }}-job-${{ job.check_run_id }}.log" 2>&1
+            # on the last line where we redirect output we don't add a line break for convenience because it is easy to make it wrong having an extra space after \ symbol which leads to exposure of logs to the public pipeline logs instead of the needed private file on a runner
+            # Example of a filename: "/var/log/inner-circle/deploy/2026-07-22-inner-circle-time-api-run-27459153975-job-81169369662.log"
+            # Learn more about '2>&1': https://stackoverflow.com/a/42919998
+            # In essence it merges output and error streams and doesn't show errors in the terminal to avoid leakage of secrets in the pipeline
