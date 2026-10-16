@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - master
-
+ 
 jobs:
   docker-build-and-push:
     uses: ./.github/workflows/.reusable-docker-build-and-push.yml
